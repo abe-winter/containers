@@ -1,0 +1,4 @@
+*.pyc
+/env
+/containers/.cache/
+/containers/containers.egg-info/
