@@ -1,0 +1,12 @@
+test2:
+    image: python:2
+    script:
+        - cd containers && pip install -e .
+        - cd ..
+        - py.test containers/test
+
+test3:
+    image: python:3
+        - cd containers && pip install -e .
+        - cd ..
+        - py.test containers/test
