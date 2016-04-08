@@ -7,6 +7,7 @@ test2:
 
 test3:
     image: python:3
+    script:
         - cd containers && pip install -e .
         - cd ..
         - py.test containers/test
