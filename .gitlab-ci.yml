@@ -13,7 +13,7 @@ test2:
 
 test3:
     script:
-        - virtualenv env3 -P 3 --system-site-packages && source env3/bin/activate
+        - virtualenv env3 -p python3 --system-site-packages && source env3/bin/activate
         - pip install pytest
         - cd containers && pip install -e .
         - cd ..
