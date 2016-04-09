@@ -1,10 +1,12 @@
 ## containers
 
-This is a python library for 'typed collections' -- it makes it safer & easier to work with collections (lists & dicts) of items of the same type.
+This is a python library for typed containers -- it makes it safer & easier to work with lists & dicts of items of the same type.
 
 ### example
 
 ```python
+import containers
+
 @containers.container_class
 class C:
     def __init__(self, x):
