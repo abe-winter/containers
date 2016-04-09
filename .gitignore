@@ -1,4 +1,6 @@
 *.pyc
 /env
+/env2
+/env3
 /containers/.cache/
 /containers/containers.egg-info/

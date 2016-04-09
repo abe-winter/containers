@@ -5,7 +5,7 @@ import functools
 __all__ = ('container_method', 'container_key', 'container_class')
 DUNDER = '__containers__'
 
-class ContainerError(StandardError): pass
+class ContainerError(Exception): pass
 class NoContainerKey(ContainerError): pass
 class NotContainerType(ContainerError, TypeError): pass
 class WontOverwriteClassmethod(ContainerError): pass

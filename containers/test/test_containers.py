@@ -43,7 +43,6 @@ def test_autokey():
             return self.x
 
     c_dict = C.container(dict)
-    print c_dict
     c_dict.add_value(C(1))
     assert c_dict[1].x == 1
     assert C(1).key() == 1
