@@ -45,6 +45,10 @@ class ListContainer(list):
     def extend(self, *args):
         raise NotImplementedError('todo')
 
+    def values(self):
+        "this exists so some container_methods can work on lists and dicts"
+        return self
+
 def container(class_, container_class):
     "create a typed container for this class. container_class param should probably be list or dict"
     return getattr(class_, DUNDER)[container_class]()

@@ -16,12 +16,26 @@ class C:
     def sum(container):
         return sum(item.x for item in container)
 
+    @containers.container_key
+    def key(self):
+        return self.x
+
 c_list = C.container(list)
 c_list.append(C(1))
 c_list.append(C(2))
+
+# items of incompatible type are rejected
 with pytest.raises(TypeError):
     c_list.append(3)
+
+# container_method methods are available on the list
 assert c_list.sum() == 3
+
+# automatic dictionary keys
+c_dict = C.container(dict)
+c_dict.add_value(C('k'))
+assert c_dict['k'].x == 'k'
+assert C('k').key() == 'k'
 ```
 
 ### compatibility
