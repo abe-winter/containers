@@ -31,5 +31,5 @@ Tested on 2.7 and 3.4.
 ### installation
 
 ```
-pip install git+git://github.com/abe-winter/containers.git
+pip install containers
 ```
