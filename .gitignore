@@ -4,3 +4,4 @@
 /env3
 /containers/.cache/
 /containers/containers.egg-info/
+/containers/dist
