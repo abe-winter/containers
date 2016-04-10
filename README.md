@@ -1,8 +1,13 @@
 ## containers
 
-This is a python library for typed containers -- it makes it safer & easier to work with lists & dicts of items of the same type.
+This is a python library for typed containers -- it makes it safer & easier to work with lists & dicts of items of the same type by providing:
+- type checks
+- container methods
+- automatic dictionary keys
 
 ### example
+
+(read test_container.py for more examples).
 
 ```python
 import containers
