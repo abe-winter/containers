@@ -39,34 +39,43 @@ class DictContainer(dict):
     def setdefault(self, *args):
         raise NotImplementedError('todo')
 
-class MultimapContainer(collections.defaultdict):
+class MultimapContainer(dict):
     ITEM_CLASS = None
     LIST_CLASS = None
 
-    def __init__(self):
-        super(MultimapContainer, self).__init__(self.LIST_CLASS)
+    def __getitem__(self, key):
+        list_ = self.get(key)
+        if list_ is None:
+            newlist = self.LIST_CLASS()
+            super(MultimapContainer, self).__setitem__(key, newlist)
+            return newlist
+        else:
+            return list_
 
     def append(self, key, value):
-        "like __setitem__ except doesn't replace"
         self[key].append(value)
-        raise NotImplementedError
 
     def __setitem__(self, key, value):
-        check(value, self.ITEM_CLASS)
+        check(value, self.LIST_CLASS)
         # todo: setting to disallow this when autokey is set
-        return super(MultimapContainer, self).__setitem__(key, value)
+        super(MultimapContainer, self).__setitem__(key, value)
 
     def append_value(self, value):
         "like append() but with automatic key"
-        if not hasattr(dict_like, 'autokey'):
+        if not hasattr(self, 'autokey'):
             raise NoContainerKey
         check(value, self.ITEM_CLASS)
         key = getattr(value, self.autokey)()
         self.append(key, value)
         return key
 
-    def add_value(self, value):
-        return common_add_value(self, value)
+    def values(self):
+        return sum(super(MultimapContainer, self).values(), self.LIST_CLASS())
+
+    def itervalues(self):
+        for list_ in super(MultimapContainer, self).itervalues():
+            for item in list_:
+                yield item
 
 class ListContainer(list):
     ITEM_CLASS = None
@@ -131,6 +140,7 @@ def container_class(class_):
         
         if hasattr(method, DUNDER + 'key'):
             setattr(cols[dict], 'autokey', name)
+            setattr(cols['multimap'], 'autokey', name)
     return class_
 
 def container_method(*container_types):

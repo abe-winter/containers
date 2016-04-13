@@ -48,3 +48,16 @@ def test_autokey():
     c_dict.add_value(C(1))
     assert c_dict[1].x == 1
     assert C(1).key() == 1
+
+def test_multimap():
+    mm = C.container('multimap')
+    [mm.append_value(C(i)) for i in (1,2)]
+    with pytest.raises(TypeError):
+        mm.append_value(3)
+    assert mm.sum() == 3
+    mm.append_value(C(1))
+    assert mm.sum() == 4
+    assert list(mm.itervalues()) == mm.values()
+    assert len(mm[1]) == 2
+    assert len(mm[2]) == 1
+    assert len(mm[3]) == 0
