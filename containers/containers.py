@@ -1,7 +1,6 @@
 "containers.py -- typed container decorators for methods"
 
-import functools
-import collections
+import six
 
 __all__ = ('container_method', 'container_key', 'container_class')
 DUNDER = '__containers__'
@@ -73,7 +72,8 @@ class MultimapContainer(dict):
         return sum(super(MultimapContainer, self).values(), self.LIST_CLASS())
 
     def itervalues(self):
-        for list_ in super(MultimapContainer, self).itervalues():
+        # todo: values vs itervalues should be consistent with py2 / py3 standards
+        for list_ in six.itervalues(super(MultimapContainer, self)):
             for item in list_:
                 yield item
 
