@@ -7,7 +7,7 @@ This is a python library for typed containers -- it makes it safer & easier to w
 
 ### example
 
-(read test_container.py for more examples).
+(read [test_containers.py](containers/test/test_containers.py) for more examples).
 
 ```python
 import containers
@@ -52,3 +52,8 @@ Tested on 2.7 and 3.4.
 ```
 pip install containers
 ```
+
+### roadmap
+
+- more container types (trees)
+- storage optimizations (unboxing on cython)

@@ -1,6 +1,7 @@
 "containers.py -- typed container decorators for methods"
 
 import functools
+import collections
 
 __all__ = ('container_method', 'container_key', 'container_class')
 DUNDER = '__containers__'
@@ -15,17 +16,20 @@ def check(item, item_class):
     if not isinstance(item, item_class):
         raise NotContainerType(type(item), item_class)
 
+def common_add_value(dict_like, value):
+    "this is like __setitem__ but the key is automatic"
+    if not hasattr(dict_like, 'autokey'):
+        raise NoContainerKey
+    check(value, dict_like.ITEM_CLASS)
+    key = getattr(value, dict_like.autokey)()
+    dict_like[key] = value
+    return key
+
 class DictContainer(dict):
     ITEM_CLASS = None
 
     def add_value(self, value):
-        ""
-        if not hasattr(self, 'autokey'):
-            raise NoContainerKey
-        check(value, self.ITEM_CLASS)
-        key = getattr(value, self.autokey)()
-        self[key] = value
-        return key
+        return common_add_value(self, value)
 
     def __setitem__(self, key, value):
         check(value, self.ITEM_CLASS)
@@ -34,6 +38,35 @@ class DictContainer(dict):
 
     def setdefault(self, *args):
         raise NotImplementedError('todo')
+
+class MultimapContainer(collections.defaultdict):
+    ITEM_CLASS = None
+    LIST_CLASS = None
+
+    def __init__(self):
+        super(MultimapContainer, self).__init__(self.LIST_CLASS)
+
+    def append(self, key, value):
+        "like __setitem__ except doesn't replace"
+        self[key].append(value)
+        raise NotImplementedError
+
+    def __setitem__(self, key, value):
+        check(value, self.ITEM_CLASS)
+        # todo: setting to disallow this when autokey is set
+        return super(MultimapContainer, self).__setitem__(key, value)
+
+    def append_value(self, value):
+        "like append() but with automatic key"
+        if not hasattr(dict_like, 'autokey'):
+            raise NoContainerKey
+        check(value, self.ITEM_CLASS)
+        key = getattr(value, self.autokey)()
+        self.append(key, value)
+        return key
+
+    def add_value(self, value):
+        return common_add_value(self, value)
 
 class ListContainer(list):
     ITEM_CLASS = None
@@ -64,13 +97,19 @@ def setup_class(class_):
 
         class ListSubclass(ListContainer):
             ITEM_CLASS = class_
+
+        class MultimapSubclass(MultimapContainer):
+            ITEM_CLASS = class_
+            LIST_CLASS = ListSubclass
         
         DictSubclass.__name__ = class_.__name__ + 'DictContainer'
         ListSubclass.__name__ = class_.__name__ + 'ListContainer'
+        MultimapSubclass.__name__ = class_.__name__ + 'MultimapContainer'
         
         setattr(class_, DUNDER, {
             list: ListSubclass,
             dict: DictSubclass,
+            'multimap': MultimapSubclass
         })
         class_.container = classmethod(container)
         return True
