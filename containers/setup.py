@@ -12,7 +12,7 @@ REQS = load_requirements(os.path.join(os.path.dirname(__file__), 'requirements.t
 
 ARGS = dict(
   name='containers',
-  version='0.0.3',
+  version='0.0.4',
   description='automatic typed collections in python using decorators',
   author='Abe Winter',
   author_email='awinter.public@gmail.com',
