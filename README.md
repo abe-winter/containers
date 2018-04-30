@@ -5,6 +5,12 @@ This is a python library for typed containers -- it makes it safer & easier to w
 - container methods
 - automatic dictionary keys
 
+### supported container classes
+
+* dict
+* list
+* multimap
+
 ### example
 
 (read [test_containers.py](containers/test/test_containers.py) for more examples).
@@ -51,6 +57,8 @@ Tested on 2.7 and 3.4.
 
 ```
 pip install containers
+# or for git master branch:
+pip install git+https://github.com/abe-winter/containers.git#subdirectory=containers
 ```
 
 ### roadmap
